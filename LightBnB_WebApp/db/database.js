@@ -1,9 +1,9 @@
 const properties = require("./json/properties.json");
 const users = require("./json/users.json");
-const {Pool} = require('pg');
+const { Pool } = require("pg");
 const pool = new Pool({
-  host: 'localhost',
-  database: 'lightbnb'
+  host: "localhost",
+  database: "lightbnb",
 });
 
 /// Users
@@ -13,15 +13,17 @@ const pool = new Pool({
  * @param {String} email The email of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-const getUserWithEmail = function (email) {
-  let resolvedUser = null;
-  for (const userId in users) {
-    const user = users[userId];
-    if (user && user.email.toLowerCase() === email.toLowerCase()) {
-      resolvedUser = user;
-    }
-  }
-  return Promise.resolve(resolvedUser);
+
+const getUserWithEmail = (email) => {
+  return pool
+    .query(`SELECT * FROM users WHERE users.email = $1`, [email])
+    .then((result) => {
+      return result.rows[0];
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return null;
+    });
 };
 
 /**
@@ -66,21 +68,20 @@ const getAllReservations = function (guest_id, limit = 10) {
  */
 
 const getAllProperties = (options, limit = 10) => {
-
   return pool
     .query(
       `SELECT *
       FROM properties
       LIMIT $1`,
-      [limit])
+      [limit]
+    )
     .then((result) => {
-      return(result.rows);
+      return result.rows;
     })
     .catch((err) => {
       console.log(err.message);
     });
 };
-
 
 // const getAllProperties = function (options, limit = 10) {
 //   const limitedProperties = {};
@@ -89,8 +90,6 @@ const getAllProperties = (options, limit = 10) => {
 //   }
 //   return Promise.resolve(limitedProperties);
 // };
-
-
 
 /**
  * Add a property to the database
