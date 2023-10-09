@@ -18,6 +18,21 @@ This project was created and published by me as part of my learnings at Lighthou
 - Create property listings
 - View user's properties & reservations
 
+## Gallery
+
+**View all reservations:**
+
+![View all reservations](./docs/ss_view.png)
+
+**Search by city, price, or rating:**
+
+![Search page](./docs/ss_search.png)
+
+**Create new property listings:**
+
+![Create new property page](./docs/ss_create.png)
+
+
 ## Usage
 
 **Clone the repository:**
