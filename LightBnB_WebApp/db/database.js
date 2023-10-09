@@ -1,5 +1,3 @@
-const properties = require("./json/properties.json");
-const users = require("./json/users.json");
 const { Pool } = require("pg");
 const pool = new Pool({
   host: "localhost",
@@ -49,7 +47,7 @@ const getUserWithId = (id) => {
  * @param {{name: string, password: string, email: string}} user
  * @return {Promise<{}>} A promise to the user.
  */
-const addUser = function (user) {
+const addUser = function(user) {
   return pool
     .query(
       `INSERT INTO users (name, email, password)
@@ -72,7 +70,7 @@ const addUser = function (user) {
  * @param {string} guest_id The id of the user.
  * @return {Promise<[{}]>} A promise to the reservations.
  */
-const getAllReservations = function (guest_id, limit = 10) {
+const getAllReservations = function(guest_id, limit = 10) {
   return pool
     .query(
       `SELECT reservations.id, thumbnail_photo_url, properties.title, number_of_bedrooms, number_of_bathrooms, parking_spaces, cost_per_night, start_date, end_date, AVG (rating) AS average_rating
@@ -86,7 +84,6 @@ const getAllReservations = function (guest_id, limit = 10) {
       [guest_id, limit]
     )
     .then((result) => {
-      console.log(result.rows);
       return result.rows;
     })
     .catch((err) => {
@@ -103,7 +100,7 @@ const getAllReservations = function (guest_id, limit = 10) {
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 
-const getAllProperties = function (options, limit = 10) {
+const getAllProperties = function(options, limit = 10) {
   // 1
   const queryParams = [];
   // 2
@@ -160,7 +157,7 @@ const getAllProperties = function (options, limit = 10) {
   LIMIT $${queryParams.length};
   `;
 
-  // 5
+  // 5 left in for evaluation testing purposes
   console.log(queryString, queryParams);
 
   // 6
@@ -172,7 +169,7 @@ const getAllProperties = function (options, limit = 10) {
  * @param {{}} property An object containing all of the property details.
  * @return {Promise<{}>} A promise to the property.
  */
-const addProperty = function (property) {
+const addProperty = function(property) {
   return pool
     .query(
       `INSERT INTO properties (owner_id, title, description, thumbnail_photo_url, cover_photo_url, cost_per_night, street, city, province, post_code, country, parking_spaces, number_of_bathrooms, number_of_bedrooms)
